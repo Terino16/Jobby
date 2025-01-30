@@ -1,11 +1,14 @@
 "use client";
 import React from "react";
-
+import { useState } from "react";
 import { CompanyFormSchema } from "@/constants/schemas/CompanyForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Textarea } from "@/components/ui/textarea"
+
 
 import {
   Form,
@@ -18,7 +21,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import CountrySelect from "../ui/country-select";
-import RegionSelect from "../ui/region-select";
 
 type Props = {};
 
@@ -26,27 +28,69 @@ export default function CompanyForm(props: Props) {
   const form = useForm<z.infer<typeof CompanyFormSchema>>({
     resolver: zodResolver(CompanyFormSchema),
     defaultValues: {
+      companyLogo: "",
       name: "",
       email: "",
       linkedin: "",
       website: "",
       description: "",
-      location: "",
-      country: "India",
-      address:""
+      country: "",
+      address: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof CompanyFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    console.log("Form Submitted:", values);
+    console.log("Form Errors:", form.formState.errors);
+    console.log("HI")
   }
+
+  const [preview, setPreview] = useState<string | null>(null);
+
 
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-col items-center justify-center">
+
+          <div className="flex flex-col items-center justify-center space-y-4 py-4 w-full">
+            <Avatar className="w-24 h-24 border">
+              {preview ? (
+                <AvatarImage src={preview} alt="Company Logo" />
+              ) : (
+                <AvatarFallback>NA</AvatarFallback>
+              )}
+            </Avatar>
+
+            <FormField
+              name="companyLogo"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel></FormLabel>
+                  <FormControl>
+                    <Input
+                      id="picture"
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        if (file) {
+                          const imageUrl = URL.createObjectURL(file);
+                          setPreview(imageUrl);
+                          field.onChange(imageUrl); // ✅ Updates form state
+                        }
+                      }}
+                      
+                    />
+                  </FormControl>
+                 
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <div className="flex items-center justify-around gap-4 ">
             <FormField
               control={form.control}
@@ -57,9 +101,7 @@ export default function CompanyForm(props: Props) {
                   <FormControl>
                     <Input placeholder="shadcn" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your Company public display name.
-                  </FormDescription>
+                 
                   <FormMessage />
                 </FormItem>
               )}
@@ -73,9 +115,7 @@ export default function CompanyForm(props: Props) {
                   <FormControl>
                     <Input placeholder="shadcn" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your Company public Linkedin Page.
-                  </FormDescription>
+                 
                   <FormMessage />
                 </FormItem>
               )}
@@ -92,7 +132,7 @@ export default function CompanyForm(props: Props) {
                   <FormControl>
                     <Input placeholder="company@gmail.com" {...field} />
                   </FormControl>
-                  <FormDescription>This is your Company Email.</FormDescription>
+                 
                   <FormMessage />
                 </FormItem>
               )}
@@ -106,44 +146,13 @@ export default function CompanyForm(props: Props) {
                   <FormControl>
                     <Input placeholder="www.company.com" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your Company Website URL.
-                  </FormDescription>
+               
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <div className="flex items-center justify-around gap-4 ">
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Head-Office Address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="304 NYC Brooklyn" {...field} />
-                  </FormControl>
-                  <FormDescription>Company Office Address.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="website"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Company Website</FormLabel>
-                  <Input placeholder="www.google.com" {...field} />
-                  <FormDescription>
-                    This is your Company Website URL.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+         
           <div className="flex items-center justify-around gap-4 ">
             <FormField
               control={form.control}
@@ -152,9 +161,9 @@ export default function CompanyForm(props: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Head-Office Address</FormLabel>
                   <FormControl>
-                  <Input placeholder="WhiteField, Banglore" {...field} />
+                    <Input placeholder="WhiteField, Banglore" {...field} />
                   </FormControl>
-                  <FormDescription>Company Office Address.</FormDescription>
+                 
                   <FormMessage />
                 </FormItem>
               )}
@@ -166,15 +175,29 @@ export default function CompanyForm(props: Props) {
                 <FormItem className="w-full">
                   <FormLabel>Head-Office Country</FormLabel>
                   <CountrySelect onChange={field.onChange} />
-                  <FormDescription>
-                    HeadOffice Country
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <Button type="submit">Submit</Button>
+          <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>About Company</FormLabel>
+                  <FormControl>
+                  <Textarea
+                  placeholder="Tell us a little bit about Company"
+                  className="resize-none"
+                  {...field}
+                />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          <Button type="submit" >Submit</Button>
         </form>
       </Form>
     </div>
