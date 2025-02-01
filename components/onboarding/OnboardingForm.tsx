@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CompanyForm from './CompanyForm'
+import JobSeeker from './JobSeekerForm'
 
 
 type Props = {}
@@ -14,7 +15,7 @@ const OnboardingForm = (props: Props) => {
       <TabsTrigger value="company" className='w-full'>Company</TabsTrigger>
     </TabsList>
     <TabsContent value="jobseeker"><CompanyForm/></TabsContent>
-    <TabsContent value="company">Change your password here.</TabsContent>
+    <TabsContent value="company"><JobSeeker/></TabsContent>
   </Tabs>
   </div>
   
