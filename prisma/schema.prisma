@@ -50,12 +50,45 @@ model User {
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
+  jobseeker     Boolean   @default(true)  
+  onboarding    Boolean   @default(false)
   accounts      Account[]
   sessions      Session[]
-  
- 
+  company       Company?  
+  employee      Employee?
+
   @@map("users")
 }
+
+model Employee {
+  id            String    @id @default(cuid())
+  userId        String    @unique @map("user_id")  
+  photo         String
+  resume        String
+  achievements  String
+  skills        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("employees")
+}
+
+model Company {
+  id              String    @id @default(cuid())
+  userId          String    @unique @map("user_id")  
+  companyLogo     String
+  companyName     String
+  companyEmail    String
+  companyAbout   String
+  companyLinkedin   String
+  companyWebsite  String
+  companyAddress  String
+  companyCountry  String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("companies")
+}
+
+
  
 model VerificationToken {
   identifier String
