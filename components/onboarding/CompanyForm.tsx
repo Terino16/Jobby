@@ -8,6 +8,8 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
+import { createCompany } from "@/actions/onboarding/createCompany";
+import { useRouter } from 'next/navigation'
 
 import {
   Form,
@@ -19,10 +21,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import CountrySelect from "../ui/country-select";
+import { redirect } from "next/navigation";
 
 type Props = {};
 
 export default function CompanyForm(props: Props) {
+
   const form = useForm<z.infer<typeof CompanyFormSchema>>({
     resolver: zodResolver(CompanyFormSchema),
     defaultValues: {
@@ -37,10 +41,16 @@ export default function CompanyForm(props: Props) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof CompanyFormSchema>) {
-    console.log("Form Submitted:", values);
-    console.log("Form Errors:", form.formState.errors);
-    console.log("HI");
+  const router = useRouter()
+
+   async function onSubmit(values: z.infer<typeof CompanyFormSchema>) {
+    const response=await createCompany(values);
+    console.log(response);
+    if(response.status==200)
+    {
+      router.push('/dashboard')
+    }
+
   }
 
   const [file, setFile] = useState<File | null>(null);
