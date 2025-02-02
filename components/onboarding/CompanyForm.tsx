@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import CountrySelect from "../ui/country-select";
 import { redirect } from "next/navigation";
+import { GeneralSubmitButton } from "../general/SubmitButtons";
 
 type Props = {};
 
@@ -249,7 +250,7 @@ export default function CompanyForm(props: Props) {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <GeneralSubmitButton text="Submit"/>
         </form>
       </Form>
     </div>

@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { JobSeekerFormSchema } from "@/constants/schemas/JobSeekerForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,8 +7,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
-import { createCompany } from "@/actions/onboarding/createCompany";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -20,11 +18,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createJobSeeker } from "@/actions/onboarding/createJobSeeker";
+import { GeneralSubmitButton } from "../general/SubmitButtons";
 
-type Props = {};
-
-
-export default function JobSeekerForm (props: Props) {
+export default function JobSeekerForm() {
   const form = useForm<z.infer<typeof JobSeekerFormSchema>>({
     resolver: zodResolver(JobSeekerFormSchema),
     defaultValues: {
@@ -35,74 +32,129 @@ export default function JobSeekerForm (props: Props) {
     },
   });
 
-  const router = useRouter()
-
-   async function onSubmit(values: z.infer<typeof JobSeekerFormSchema>) {
-    console.log(values);
-    // const response=await createCompany(values);
-    // console.log(response);
-    // if(response.status==200)
-    // {
-    //   router.push('/dashboard')
-    // }
-
-  }
-
+  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
+  const [pdffile, setPdfFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
-  // Handle File Selection & Preview
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // Show preview
+      setPreview(URL.createObjectURL(selectedFile));
+    }
+  };
+
+  const handleResumeFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setPdfFile(selectedFile);
     }
   };
 
   const uploadFile = async () => {
-    if (!file) {
-      alert("No file selected");
-      return;
-    }
-
+    if (!file) return null;
     try {
       setUploading(true);
       const data = new FormData();
       data.append("file", file);
-      const uploadRequest = await fetch("/api/files", {
+      const response = await fetch("/api/files", {
         method: "POST",
         body: data,
-      });
-      const response = await uploadRequest.json();
-      console.log(response);
+      }).then((res) => res.json());
 
-      if (response.status == 200) {
-        form.setValue("photo", response.url);
-        alert("File uploaded successfully!");
+      if (response.status === 200) {
+        return response.url;
       } else {
-        alert("File upload failed!");
+        alert("Photo upload failed!");
+        return null;
       }
     } catch (error) {
       console.error(error);
-      alert("Trouble uploading file");
+      alert("Trouble uploading photo");
+      return null;
     } finally {
       setUploading(false);
     }
   };
 
+  const uploadResume = async () => {
+    if (!pdffile) return null;
+    try {
+      setUploading(true);
+      const data = new FormData();
+      data.append("file", pdffile);
+      const response = await fetch("/api/files", {
+        method: "POST",
+        body: data,
+      }).then((res) => res.json());
+
+      if (response.status === 200) {
+        return response.url;
+      } else {
+        alert("Resume upload failed!");
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Trouble uploading resume");
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  async function onSubmit(values: z.infer<typeof JobSeekerFormSchema>) {
+    setUploading(true);
+
+    const [photoUrl, resumeUrl] = await Promise.all([
+      uploadFile(),
+      uploadResume(),
+    ]);
+
+    if (photoUrl) {
+      form.setValue("photo", photoUrl);
+      await form.trigger("photo"); // Revalidate field
+    }
+
+    if (resumeUrl) {
+      form.setValue("resume", resumeUrl);
+      await form.trigger("resume"); // Revalidate field
+    }
+
+    if (!photoUrl || !resumeUrl) {
+      alert("Please upload both the Photo and Resume before submitting.");
+      setUploading(false);
+      return;
+    }
+
+    console.log(values);
+
+    const response = await createJobSeeker(values);
+    console.log(response);
+    if (response.status == 200) {
+      router.push("/dashboard");
+      setUploading(false);
+    }
+  }
+
   return (
     <div>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit(form.getValues()); // ✅ Manually trigger onSubmit after file upload
+          }}
           className="space-y-6 flex-col items-center justify-center"
         >
           <div className="flex flex-col items-center justify-center space-y-4 py-4 w-full">
             <Avatar className="w-24 h-24 border">
               {preview ? (
-                <AvatarImage src={preview} alt="Company Logo" />
+                <AvatarImage src={preview} alt="Profile Photo" />
               ) : (
                 <AvatarFallback>NA</AvatarFallback>
               )}
@@ -111,31 +163,20 @@ export default function JobSeekerForm (props: Props) {
             <FormField
               name="photo"
               control={form.control}
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
-                  <FormLabel></FormLabel>
+                  <FormLabel>Profile Photo</FormLabel>
                   <FormControl>
                     <Input
-                      id="picture"
                       type="file"
                       accept="image/*"
                       onChange={handleFileChange}
                     />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            <Button
-              type="button"
-              onClick={uploadFile}
-              disabled={uploading}
-              className="mt-2"
-            >
-              {uploading ? "Uploading..." : "Upload Photo"}
-            </Button>
           </div>
 
           <FormField
@@ -146,7 +187,7 @@ export default function JobSeekerForm (props: Props) {
                 <FormLabel>Skills</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Tell us a little bit about Company"
+                    placeholder="Describe your skills"
                     className="resize-none"
                     {...field}
                   />
@@ -155,7 +196,8 @@ export default function JobSeekerForm (props: Props) {
               </FormItem>
             )}
           />
-           <FormField
+
+          <FormField
             control={form.control}
             name="achievements"
             render={({ field }) => (
@@ -163,7 +205,7 @@ export default function JobSeekerForm (props: Props) {
                 <FormLabel>Achievements</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Tell us a little bit about Company"
+                    placeholder="List your achievements"
                     className="resize-none"
                     {...field}
                   />
@@ -172,10 +214,28 @@ export default function JobSeekerForm (props: Props) {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+
+          <FormField
+            name="resume"
+            control={form.control}
+            render={() => (
+              <FormItem>
+                <FormLabel>Resume</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handleResumeFileChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+         <GeneralSubmitButton text="Submit" />
         </form>
       </Form>
     </div>
   );
 }
-

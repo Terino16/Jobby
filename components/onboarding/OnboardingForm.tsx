@@ -14,8 +14,8 @@ const OnboardingForm = (props: Props) => {
       <TabsTrigger value="jobseeker" className='w-full'>Job Seeker</TabsTrigger>
       <TabsTrigger value="company" className='w-full'>Company</TabsTrigger>
     </TabsList>
-    <TabsContent value="jobseeker"><CompanyForm/></TabsContent>
-    <TabsContent value="company"><JobSeeker/></TabsContent>
+    <TabsContent value="jobseeker"><JobSeeker/></TabsContent>
+    <TabsContent value="company"><CompanyForm/></TabsContent>
   </Tabs>
   </div>
   
