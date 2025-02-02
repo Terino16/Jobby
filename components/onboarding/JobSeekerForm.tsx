@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -117,12 +118,11 @@ export default function JobSeekerForm() {
 
     if (photoUrl) {
       form.setValue("photo", photoUrl);
-      await form.trigger("photo"); // Revalidate field
     }
 
     if (resumeUrl) {
       form.setValue("resume", resumeUrl);
-      await form.trigger("resume"); // Revalidate field
+     
     }
 
     if (!photoUrl || !resumeUrl) {
@@ -233,7 +233,7 @@ export default function JobSeekerForm() {
             )}
           />
 
-         <GeneralSubmitButton text="Submit" />
+        <Button type="submit" disabled={uploading}>{uploading ? <Loader2 className="w-4 h-4 animate-spin"/> : "Submit"}</Button>
         </form>
       </Form>
     </div>
