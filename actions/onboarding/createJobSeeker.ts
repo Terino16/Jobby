@@ -25,7 +25,8 @@ export const createJobSeeker = async (data: JobSeekerForm) => {
         // Update the user's onboarding status to true
         await prisma.user.update({
             where: { id: session.user.id },
-            data: { onboarding: true },
+            data: { onboarding: true,
+             },
         });
 
         return {

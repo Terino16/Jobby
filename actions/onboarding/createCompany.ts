@@ -31,7 +31,9 @@ export const createCompany = async (data: CompanyForm) => {
         // Update the user's onboarding status to true
         await prisma.user.update({
             where: { id: session.user.id },
-            data: { onboarding: true },
+            data: { onboarding: true,
+                   jobseeker: false,
+             },
         });
 
        

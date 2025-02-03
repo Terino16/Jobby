@@ -10,8 +10,8 @@ import { auth } from "@/lib/auth"
 type Props = {}
 
 const Navbar =  async (props: Props) => {
-  // const session = await auth()
-  const session = false;
+  const session = await auth()
+  
   
   return (
      <nav className='flex items-center justify-between py-5'>
