@@ -21,19 +21,19 @@ export const sidebarRoutes: SidebarRoute[] = [
         title: "My Jobs",
         href: Routes.myJobs,
         icon: Briefcase,
-        isActive: true,
+        isActive: false,
     },
     {
         title: "Post a Job",
         href: Routes.postJob,
         icon: Plus,
-        isActive: true,
+        isActive: false,
     },
     {
         title: "Settings",
         href: Routes.settings,
         icon: Settings2,
-        isActive: true,
+        isActive: false,
     },
 ]
 

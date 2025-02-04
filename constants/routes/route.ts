@@ -2,8 +2,8 @@ const Routes = {
     home: "/",
     login: "/auth/login",
     companyDashboard: "/dashboard/company",
-    myJobs: "/dashboard/company/my-jobs",
-    postJob: "/dashboard/company/post-job",
+    myJobs: "/dashboard/company/myjobs",
+    postJob: "/dashboard/company/postajob",
     settings: "/dashboard/company/settings",
 }
 
