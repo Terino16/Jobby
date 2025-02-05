@@ -16,8 +16,6 @@ jobs:
       - name: Install Dependencies
         run: npm install  # Run `npm install`
 
-      - name: Run Format
-        run: npm run format  # Run format
 
       - name: Run Lint
         run: npm run lint  # Run lint
