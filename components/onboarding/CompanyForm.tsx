@@ -21,12 +21,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import CountrySelect from "../ui/country-select";
-import { redirect } from "next/navigation";
 import { GeneralSubmitButton } from "../general/SubmitButtons";
 
-type Props = {};
 
-export default function CompanyForm(props: Props) {
+
+
+export default function CompanyForm() {
 
   const form = useForm<z.infer<typeof CompanyFormSchema>>({
     resolver: zodResolver(CompanyFormSchema),
@@ -117,7 +117,7 @@ export default function CompanyForm(props: Props) {
             <FormField
               name="companyLogo"
               control={form.control}
-              render={({ field }) => (
+              render={({  }) => (
                 <FormItem>
                   <FormLabel></FormLabel>
                   <FormControl>

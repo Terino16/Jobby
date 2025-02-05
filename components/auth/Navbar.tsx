@@ -1,11 +1,9 @@
 import React from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { ModeToggle } from '../general/theme-toggle'
-import { Button } from '../ui/button'
-type Props = {}
 
-const Navbar = (props: Props) => {
+
+const Navbar = () => {
   return (
      <nav className='flex items-center justify-between py-5'>
         <div className='flex items-center'>

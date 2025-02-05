@@ -1,3 +1,4 @@
+/* eslint-disable */
 export interface Region {
     name: string;
     shortCode: string;

@@ -1,10 +1,9 @@
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { GeneralSubmitButton } from "../general/SubmitButtons"
 import { signIn } from "@/lib/auth"
+import Link from "next/link"
+import Image from "next/image"
 
 
 export function GoogleIcon()
@@ -80,17 +79,19 @@ export default function LoginForm({
              
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
+                <Link href="#" className="underline underline-offset-4">
                   Sign up
-                </a>
+                </Link>
               </div>
             </div>
           
           <div className="relative hidden bg-muted md:block">
-            <img
+            <Image
               src="/auth.jpg"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover"
+              width={500}
+              height={500}
             />
           </div>
         </CardContent>

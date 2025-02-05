@@ -6,9 +6,9 @@ import { ModeToggle } from "../general/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { UserComponent } from "@/components/general/UserComponent"
 import { auth } from "@/lib/auth"
-type Props = {}
 
-const Navbar =  async (props: Props) => {
+
+const Navbar =  async () => {
   const session = await auth()
 
   

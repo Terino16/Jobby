@@ -3,9 +3,9 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import React from 'react'
 
-type Props = {}
 
-const page = async (props: Props) => {
+
+const page = async () => {
   const session = await auth();
   if(!session?.user?.id) return redirect('/login');
   const user = await findRole(); 

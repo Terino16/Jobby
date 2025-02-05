@@ -3,9 +3,9 @@ import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import OnboardingForm from '@/components/onboarding/OnboardingForm'
 import { getOnboardingStatus } from '@/actions/onboarding/getOnboarding'
-type Props = {}
 
-export default async function Page(props: Props) {
+
+export default async function Page() {
   const session = await auth()
  
   if (!session?.user) 

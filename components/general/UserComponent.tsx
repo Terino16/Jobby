@@ -1,5 +1,4 @@
 "use client"
-import { User } from "next-auth"
 import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -8,18 +7,14 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { signOut } from "next-auth/react"
 
 
-interface Props {
 
-}
 
-export const UserComponent = ({ }: Props) => {
+export const UserComponent = () => {
     const { data: session } = useSession();
     if (!session) return null;
     return (

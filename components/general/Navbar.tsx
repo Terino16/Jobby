@@ -1,5 +1,4 @@
 
-import { useSession } from "next-auth/react"
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,9 +6,9 @@ import { ModeToggle } from './theme-toggle'
 import { Button } from '../ui/button'
 import { UserComponent } from "./UserComponent"
 import { auth } from "@/lib/auth"
-type Props = {}
 
-const Navbar =  async (props: Props) => {
+
+const Navbar =  async () => {
   const session = await auth()
   
   

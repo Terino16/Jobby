@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createJobSeeker } from "@/actions/onboarding/createJobSeeker";
-import { GeneralSubmitButton } from "../general/SubmitButtons";
+
 
 export default function JobSeekerForm() {
   const form = useForm<z.infer<typeof JobSeekerFormSchema>>({

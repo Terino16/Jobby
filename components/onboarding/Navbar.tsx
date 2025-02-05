@@ -1,15 +1,13 @@
-"use client"
-import { useSession } from "next-auth/react"
+
 import React from 'react'
 import Image from 'next/image'
 import { ModeToggle } from "../general/theme-toggle"
-import UserAvatar from "../general/UserAvatar"
-import { redirect } from "next/navigation"
+import { auth } from "@/lib/auth"
+import { UserComponent } from "../general/UserComponent"
 
-type Props = {}
 
-const Navbar =  (props: Props) => {
-  const { data: session } = useSession();
+const Navbar =  async () => {
+   const session = await auth();
 
 
   return (
@@ -21,7 +19,7 @@ const Navbar =  (props: Props) => {
         <div className='flex items-center space-x-4'>
         <ModeToggle />
          {session  &&  (
-            <UserAvatar user={session?.user}/>  )}
+             <UserComponent/> )}
         </div>
      </nav>
   )

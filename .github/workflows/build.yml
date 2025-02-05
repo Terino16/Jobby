@@ -1,0 +1,32 @@
+name: CI Pipeline  # Workflow name
+on: [push]  # Run on every push & PR
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Runs on Ubuntu
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4  # Fetch repository code
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18  # Set Node.js version
+
+      - name: Install Dependencies
+        run: npm install  # Run `npm install`
+
+      - name: Run Format
+        run: npm run format  # Run format
+
+      - name: Run Lint
+        run: npm run lint  # Run lint
+
+      - name: Run DB Generate
+        run: npm run db:generate  # Run db:generate
+
+      - name: Run Build
+        run: npm run build  # Run build
+
+      - name: Run Start
+        run: npm run start  # Run start

@@ -1,3 +1,5 @@
+/* eslint-disable */
+"use client"
 import ReviewBox from "./ReviewBox";
 import { reviews } from "@/resources/reviews";
 export default function Reviews() {

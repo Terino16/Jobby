@@ -4,9 +4,9 @@ import CompanyForm from './CompanyForm'
 import JobSeeker from './JobSeekerForm'
 
 
-type Props = {}
 
-const OnboardingForm = (props: Props) => {
+
+const OnboardingForm = () => {
   return (
     <div className=''>
     <Tabs defaultValue="jobseeker" className="lg:w-[800px] md:w-[650px]">

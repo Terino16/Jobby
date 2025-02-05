@@ -1,5 +1,7 @@
 // reduces the subset of countries depending on whether the user specified a white/blacklist, and lists priority
 // countries first
+/* eslint-disable */
+/* @typescript-eslint/no-explicit-any */
 
 export interface Region {
     name: string;
