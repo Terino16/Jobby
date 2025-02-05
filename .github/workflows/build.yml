@@ -26,5 +26,3 @@ jobs:
       - name: Run Build
         run: npm run build  # Run build
 
-      - name: Run Start
-        run: npm run start  # Run start
