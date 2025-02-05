@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "db:generate": "cd npx prisma generate"
+    "db:generate": "npx prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
