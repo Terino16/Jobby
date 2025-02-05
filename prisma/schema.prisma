@@ -56,7 +56,7 @@ model User {
   sessions      Session[]
   company       Company?  
   employee      JobSeeker?
-
+  applicant     Applicant[]
   @@map("users")
 }
 
@@ -74,7 +74,7 @@ model JobSeeker {
 
 model Company {
   id              String    @id @default(cuid())
-  userId          String    @unique @map("user_id")  
+  userId          String    @unique @map("user_id")
   companyLogo     String
   companyName     String
   companyEmail    String
@@ -84,10 +84,36 @@ model Company {
   companyAddress  String
   companyCountry  String
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobs            Job[]
 
   @@map("companies")
 }
 
+model Job {
+  id            String    @id @default(cuid())
+  title         String
+  description   String
+  salary        String
+  location      String
+  companyId     String
+  status        Boolean
+  applicants    Applicant[]
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("jobs")
+}
+
+model Applicant {
+  id            String    @id @default(cuid())
+  jobId         String
+  job           Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status        Boolean   @default(false) //false->pending, true->accepted
+  createdAt     DateTime  @default(now()) // Track application time
+
+  @@map("applicants")
+}
 
  
 model VerificationToken {

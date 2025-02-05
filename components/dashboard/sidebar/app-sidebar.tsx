@@ -1,9 +1,6 @@
 "use client"
 import Link from "next/link"
 import * as React from "react"
-import { useSession } from "next-auth/react"
-
-
 import { NavMain } from "./nav-main"
 import { NavSecondary } from "./nav-secondary"
 import { NavUser } from "./nav-user"
@@ -20,18 +17,9 @@ import Image from "next/image"
 import { sidebarRoutes } from "@/constants/routes/sidebar"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession();
-  const user = session?.user;
 
-  if(!user) return null;
-
-  // const user = {
-  //   name: "John Doe",
-  //   email: "john.doe@example.com",
-  //   image: "/avatars/shadcn.jpg",
-  // }
   return (
-    <Sidebar variant="inset" {...props}>
+    <Sidebar variant="inset" {...props} className="">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -54,12 +42,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-          <NavUser user={{
-            name: user.name ?? 'Anonymous',
-            email: user.email ?? '',
-            image: user.image ?? ''
-          }} />
-          {/* <NavUser user={user} /> */}
+          <NavUser />
       </SidebarFooter>
     </Sidebar>
   )

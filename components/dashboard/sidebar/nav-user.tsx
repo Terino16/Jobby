@@ -8,6 +8,8 @@ import {
   LogOut,
   Sparkles,
 } from "lucide-react"
+import { useSession } from "next-auth/react"
+
 
 import {
   Avatar,
@@ -30,16 +32,31 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    image: string
+export function NavUser() {
+  const { data: session, status } = useSession()
+  const { isMobile } = useSidebar()
+
+  if (status === "loading") {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <div className="flex items-center gap-3 p-2">
+            <div className="h-8 w-8 animate-pulse rounded-lg bg-sidebar-accent" />
+            <div className="space-y-2">
+              <div className="h-4 w-24 animate-pulse rounded bg-sidebar-accent" />
+              <div className="h-3 w-32 animate-pulse rounded bg-sidebar-accent" />
+            </div>
+          </div>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    )
   }
-}) {
-  const { isMobile } = useSidebar();
+
+  const user = {
+    name: session?.user?.name ?? "Anonymous",
+    email: session?.user?.email ?? "",
+    image: session?.user?.image ?? ""
+  }
 
   return (
     <SidebarMenu>
@@ -51,7 +68,7 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.image} alt={user.name} />
+                <AvatarImage src={user?.image} alt={user.name} />
                 <AvatarFallback className="rounded-lg">{user.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">

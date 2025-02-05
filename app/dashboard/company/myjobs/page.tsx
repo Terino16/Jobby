@@ -1,4 +1,4 @@
-import { JobsTable } from "@/components/dashboard/jobs/JobsTable";
+import { JobsTable } from "@/components/dashboard/company/jobs/JobsTable";
 import { ModeToggle } from "@/components/general/theme-toggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 

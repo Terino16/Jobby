@@ -9,7 +9,7 @@ interface MetricCardProps {
 }
 export function MetricCard({ title, value, icon, className,divClassName }: MetricCardProps) {
   return (
-    <Card className={cn("motion-scale-in-[0.5] motion-rotate-in-[-10deg] motion-blur-in-[10px] motion-delay-[0.75s]/rotate motion-delay-[0.75s]/blur", divClassName)} >
+    <Card className={cn("", divClassName)} >
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground ">
           {title}
