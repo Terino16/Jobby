@@ -1,3 +1,4 @@
+"use client"
 import {
     Table,
     TableBody,
@@ -8,6 +9,7 @@ import {
   } from "@/components/ui/table";
   import { Badge } from "@/components/ui/badge";
   import { Job } from "@/constants/types/Job";
+
 import JobEditDialog from "./JobEditDialog";
   export function JobsTable({jobs}: {jobs: Job[]}) {
     return (
@@ -29,9 +31,9 @@ import JobEditDialog from "./JobEditDialog";
               <TableCell>{job.salary}</TableCell>
               <TableCell>
                 <Badge
-                  variant={job.status ? "default" : "secondary"}
+                  variant={job.status.toLowerCase() === "active" ? "default" : "secondary"}
                 >
-                  {job.status ? "Active" : "Closed"}
+                  {job.status.toLowerCase() === "active" ? "Active" : "Closed"}
                 </Badge>
               </TableCell>
               <TableCell>

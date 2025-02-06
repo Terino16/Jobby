@@ -1,10 +1,6 @@
 
 
-export enum Status {
-    ACTIVE = "Active",
-    INACTIVE = "Inactive"
-}
-
+import { Status as PrismaStatus } from "@prisma/client";
 export interface Job{
     id: string;
     title: string;
@@ -12,7 +8,7 @@ export interface Job{
     salary: string;
     location: string;
     companyId: string;
-    status: Status;
+    status: PrismaStatus;
 
 }
 

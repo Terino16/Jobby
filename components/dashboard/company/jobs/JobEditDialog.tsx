@@ -32,14 +32,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { GeneralSubmitButton } from "@/components/general/SubmitButtons";
 import { updateJob } from "@/actions/dashboard/company/Myjobs/updateJob";
-import { Status } from "@/constants/types/Job";
+import { Status as PrismaStatus } from "@prisma/client";
 
 const jobSchema = z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().min(10, "Description must be at least 10 characters"),
     salary: z.string().min(1, "Salary is required"),
     location: z.string().min(1, "Location is required"),
-    status: z.nativeEnum(Status),
+    status: z.nativeEnum(PrismaStatus),
 });
 
 
@@ -50,7 +50,7 @@ interface Props {
         description: string;
         salary: string;
         location: string;
-        status: Status;
+        status: PrismaStatus;
     };
 }
 
@@ -65,7 +65,7 @@ export default function JobEditDialog({ data }: Props) {
             description: data.description,
             salary: data.salary,
             location: data.location,
-            status: data.status as Status,
+            status: data.status as PrismaStatus,
         },
     });
 
@@ -156,8 +156,8 @@ export default function JobEditDialog({ data }: Props) {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value={Status.ACTIVE}>{Status.ACTIVE}</SelectItem>
-                                            <SelectItem value={Status.INACTIVE}>{Status.INACTIVE}</SelectItem>
+                                            <SelectItem value={PrismaStatus.ACTIVE}>{PrismaStatus.ACTIVE}</SelectItem>
+                                            <SelectItem value={PrismaStatus.INACTIVE}>{PrismaStatus.INACTIVE}</SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />

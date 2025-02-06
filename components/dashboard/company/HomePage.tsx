@@ -21,7 +21,11 @@ interface Props{
   recentlyAppliedCandidates: Applicant[];
 }
 
-export default function HomePage({company, jobs, applicants, unreviewedApplicants, recentlyAppliedCandidates}: Props) {
+export default function HomePage({
+  //company, 
+  jobs, applicants, unreviewedApplicants, 
+ // recentlyAppliedCandidates
+}: Props) {
   return(
     < main className=" flex-1 p-8">
     <h1 className="lg:text-5xl md:text-4xl text-3xl font-thin tracking-tighter font-sans mb-8">Dashboard Overview</h1>

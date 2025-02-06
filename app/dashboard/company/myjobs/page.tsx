@@ -4,7 +4,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { JobsTable } from "@/components/dashboard/company/jobs/JobsTable";
 import { getCompany } from "@/actions/dashboard/company/Home/getCompany";
 import { getPostedJobs } from "@/actions/dashboard/company/Myjobs/getPostedJobs";
-import { Status } from "@/constants/types/Job";
 function JobsSkeleton() {
   return (
     <div className="animate-pulse">
@@ -24,24 +23,13 @@ function JobsSkeleton() {
 }
 
 async function JobsContent() {
-  // const company = await getCompany();
+  const company = await getCompany();
 
-  // if (!company) return <div>Company not found</div>;
+  if (!company) return <div>Company not found</div>;
 
-  // const jobs = await getPostedJobs(company.id);
-  // console.log(jobs);
+  const jobs = await getPostedJobs(company.id);
+  console.log(jobs);
 
-  const jobs=[
-    {
-      id: 'cm6qt9nvm0000it971ohm8oi0',
-      title: 'FullStack Developer',
-      description: 'A very good Developer',
-      salary: '250000',
-      location: 'Banglore',
-      companyId: 'cm6qtb0c60006it975kzmtbeh',
-      status: Status.ACTIVE
-    }
-  ]
 
   return (
     <main className="flex-1 p-8">
