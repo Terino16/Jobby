@@ -2,11 +2,11 @@ import { Suspense } from "react";
 import { ModeToggle } from "@/components/general/theme-toggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import HomePage from "@/components/dashboard/company/HomePage";
-import { getCompany } from "@/actions/company/getCompany";
-import { getApplicants } from "@/actions/company/getApplicants";
-import { getUnreviewedApplicants } from "@/actions/company/getUnreviewedApplicants";
-import { getJobs } from "@/actions/company/getJobs";
-
+import { getCompany } from "@/actions/dashboard/company/Home/getCompany";
+import { getApplicants } from "@/actions/dashboard/company/Home/getApplicants";
+import { getUnreviewedApplicants } from "@/actions/dashboard/company/Home/getUnreviewedApplicants";
+import { getJobs } from "@/actions/dashboard/company/Home/getJobs";
+import { getRecentlyAppliedCandidates } from "@/actions/dashboard/company/Home/getRecentApplicants";
 // Loading skeleton component
 function DashboardSkeleton() {
   return (
@@ -33,10 +33,11 @@ async function DashboardContent() {
 
   if (!company) return <div>Company not found</div>;
 
-  const [jobs, applicants, unreviewedApplicants] = await Promise.all([
+  const [jobs, applicants, unreviewedApplicants, recentlyAppliedCandidates] = await Promise.all([
     getJobs(company.id),
     getApplicants(company.id),
     getUnreviewedApplicants(company.id),
+    getRecentlyAppliedCandidates(company.id),
   ]);
 
   return (
@@ -45,6 +46,7 @@ async function DashboardContent() {
       jobs={jobs} 
       applicants={applicants} 
       unreviewedApplicants={unreviewedApplicants} 
+      recentlyAppliedCandidates={recentlyAppliedCandidates}
     />
   );
 }

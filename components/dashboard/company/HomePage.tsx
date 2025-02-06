@@ -1,7 +1,7 @@
 import { MetricCard } from "@/components/dashboard/company/jobs/MetricCard"
 import { RecentApplications } from "@/components/dashboard/company/jobs/RecentApplications"
 import { Briefcase, Users, CheckCircle, Clock } from "lucide-react"
-import { Job } from "@/constants/types/Job";
+import { Applicant } from "@prisma/client"
 interface Props{
   company: {
     id: string;
@@ -18,9 +18,10 @@ interface Props{
   jobs: number;
   applicants: number;
   unreviewedApplicants: number;
+  recentlyAppliedCandidates: Applicant[];
 }
 
-export default function HomePage({company, jobs, applicants, unreviewedApplicants}: Props) {
+export default function HomePage({company, jobs, applicants, unreviewedApplicants, recentlyAppliedCandidates}: Props) {
   return(
     < main className=" flex-1 p-8">
     <h1 className="lg:text-5xl md:text-4xl text-3xl font-thin tracking-tighter font-sans mb-8">Dashboard Overview</h1>

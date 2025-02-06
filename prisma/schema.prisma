@@ -96,11 +96,16 @@ model Job {
   salary        String
   location      String
   companyId     String
-  status        Boolean
+  status        Status 
   applicants    Applicant[]
   company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("jobs")
+}
+
+enum Status{
+  ACTIVE
+  INACTIVE
 }
 
 model Applicant {

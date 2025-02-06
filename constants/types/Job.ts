@@ -1,5 +1,9 @@
 
-import { Applicant } from "./Applicant";
+
+export enum Status {
+    ACTIVE = "Active",
+    INACTIVE = "Inactive"
+}
 
 export interface Job{
     id: string;
@@ -8,8 +12,7 @@ export interface Job{
     salary: string;
     location: string;
     companyId: string;
-    status: boolean;
-    applicants: Applicant[];
+    status: Status;
 
 }
 
