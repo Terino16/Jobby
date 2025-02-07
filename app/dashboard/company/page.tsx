@@ -7,20 +7,22 @@ import { getApplicants } from "@/actions/dashboard/company/Home/getApplicants";
 import { getUnreviewedApplicants } from "@/actions/dashboard/company/Home/getUnreviewedApplicants";
 import { getJobs } from "@/actions/dashboard/company/Home/getJobs";
 import { getRecentlyAppliedCandidates } from "@/actions/dashboard/company/Home/getRecentApplicants";
+import { Skeleton } from "@/components/ui/skeleton";
 // Loading skeleton component
 function DashboardSkeleton() {
   return (
     <div className="animate-pulse">
       <header className="flex h-16 shrink-0 items-center gap-2">
-        <div className="flex w-full items-center justify-between gap-2 px-4">
-          <div className="h-8 w-8 rounded bg-gray-800" />
-          <div className="h-8 w-8 rounded bg-gray-800" />
-        </div>
+       
       </header>
       <div className="space-y-4 p-4">
-        <div className="h-8 w-1/3 rounded bg-gray-800" />
-        <div className="h-32 rounded bg-gray-800" />
-        <div className="h-32 rounded bg-gray-800" />
+      <div className="flex justify-between w-full">
+      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      </div>
+        <Skeleton className="h-64 rounded-xl" />
       </div>
     </div>
   );

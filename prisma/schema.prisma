@@ -98,9 +98,12 @@ model Job {
   companyId     String
   status        Status 
   applicants    Applicant[]
+  createdAt     DateTime  @default(now()) 
   company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("jobs")
+  @@index([title])
+  @@index([location])
 }
 
 enum Status{

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/general/theme-toggle"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
+
 export default function Settings() {
     return (
       <div>

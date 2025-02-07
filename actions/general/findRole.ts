@@ -13,12 +13,17 @@ export const findRole = async () => {
     try {
         const user = await prisma.user.findUnique({
             where: { id: session.user.id },
-            select: { jobseeker: true },
+            select: {
+                jobseeker: true,
+                employee: { select: { id: true } },
+                company: { select: { id: true } },
+              },
         });
 
         return {
             message: "Role fetched successfully",
             role: user?.jobseeker,
+            id: user?.employee?.id || user?.company?.id,
             status: 200,
         };
     } catch (error) {
