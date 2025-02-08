@@ -28,7 +28,6 @@ async function JobsContent() {
   if (!company) return <div>Company not found</div>;
 
   const jobs = await getPostedJobs(company.id);
-  console.log(jobs);
 
 
   return (

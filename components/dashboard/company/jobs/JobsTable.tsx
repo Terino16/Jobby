@@ -11,8 +11,8 @@ import {
   import { Job } from "@/constants/types/Job";
 
 import JobEditDialog from "./JobEditDialog";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
   export function JobsTable({jobs}: {jobs: Job[]}) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
@@ -50,6 +50,13 @@ import Link from "next/link";
               </TableCell>
               <TableCell>
                 <JobEditDialog data={job} />
+              </TableCell>
+              <TableCell>
+               <Button variant="outline">
+                <Link href={`/dashboard/company/myjobs/${job.id}`}>
+                  View Applicants
+                </Link>
+              </Button>
               </TableCell>
             </TableRow>
           ))}

@@ -32,15 +32,19 @@ function DashboardSkeleton() {
 async function DashboardContent() {
 
   const company = await getCompany();
-
   if (!company) return <div>Company not found</div>;
 
-  const [jobs, applicants, unreviewedApplicants, recentlyAppliedCandidates] = await Promise.all([
+  const [jobs, applicants, unreviewedApplicants, fetchedApplications] = await Promise.all([
     getJobs(company.id),
     getApplicants(company.id),
     getUnreviewedApplicants(company.id),
     getRecentlyAppliedCandidates(company.id),
   ]);
+
+  const recentlyAppliedCandidates = fetchedApplications.map(app => ({
+    ...app,
+    createdAt: new Date(app.createdAt), // This conversion was causing the type error
+  }));
 
   return (
     <HomePage 

@@ -115,6 +115,12 @@ model Applicant {
   id            String    @id @default(cuid())
   jobId         String
   job           Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  image         String
+  name          String
+  email         String
+  skills        String
+  achievements  String
+  resume        String
   userId        String
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   status        Boolean   @default(false) //false->pending, true->accepted

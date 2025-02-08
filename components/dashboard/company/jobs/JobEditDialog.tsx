@@ -2,6 +2,7 @@
 
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogHeader,
     DialogTitle,
@@ -72,7 +73,6 @@ export default function JobEditDialog({ data }: Props) {
     async function onSubmit(values: z.infer<typeof jobSchema>) {
         console.log(values)
         const updatedJob = await updateJob(data.id, values);
-        console.log(updatedJob);
     }
 
     return (
@@ -166,7 +166,9 @@ export default function JobEditDialog({ data }: Props) {
                         />
 
                         <div className="flex justify-end gap-2">
-                            <GeneralSubmitButton text="Save Changes" />
+                        <DialogClose asChild>
+                        <Button type="submit">Confirm</Button>
+                        </DialogClose>
                         </div>
                     </form>
                 </Form>
