@@ -20,7 +20,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createJobSeeker } from "@/actions/onboarding/createJobSeeker";
-
+import { Badge } from "@/components/ui/badge";
+import { Popup } from "@/components/ui/Popup";
+const skillOptions = ["Frontend", "React", "Next.js", "Tailwind CSS", "JavaScript", "TypeScript", "Node.js", "Express", "MongoDB"];
 
 export default function JobSeekerForm() {
   const form = useForm<z.infer<typeof JobSeekerFormSchema>>({
@@ -29,7 +31,7 @@ export default function JobSeekerForm() {
       photo: "",
       resume: "",
       achievements: "",
-      skills: "",
+      skills: [],
     },
   });
 
@@ -47,13 +49,26 @@ export default function JobSeekerForm() {
     }
   };
 
-  const handleResumeFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleResumeFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setPdfFile(selectedFile);
     }
+  };
+
+  const handleSkillClick = (skill: string) => {
+    const currentSkills = form.getValues("skills");
+    if (!currentSkills.includes(skill)) {
+      const updatedSkills = [...currentSkills, skill];
+      if (updatedSkills.length > 0) {
+        form.setValue("skills", updatedSkills as [string, ...string[]]);
+      }
+    }
+  };
+
+  const removeSkill = (skill: string) => {
+    const updatedSkills = form.getValues("skills").filter((s: string) => s !== skill);
+    form.setValue("skills", updatedSkills as [string, ...string[]]);
   };
 
   const uploadFile = async () => {
@@ -70,12 +85,12 @@ export default function JobSeekerForm() {
       if (response.status === 200) {
         return response.url;
       } else {
-        alert("Photo upload failed!");
+        Popup({variant: "destructive", title: "Error", description: "Photo upload failed!"});
         return null;
       }
     } catch (error) {
       console.error(error);
-      alert("Trouble uploading photo");
+      Popup({variant: "destructive", title: "Error", description: "Trouble uploading photo"});
       return null;
     } finally {
       setUploading(false);
@@ -96,12 +111,12 @@ export default function JobSeekerForm() {
       if (response.status === 200) {
         return response.url;
       } else {
-        alert("Resume upload failed!");
+        Popup({variant: "destructive", title: "Error", description: "Resume upload failed!"});
         return null;
       }
     } catch (error) {
       console.error(error);
-      alert("Trouble uploading resume");
+      Popup({variant: "destructive", title: "Error", description: "Trouble uploading resume"});
       return null;
     } finally {
       setUploading(false);
@@ -110,36 +125,30 @@ export default function JobSeekerForm() {
 
   async function onSubmit(values: z.infer<typeof JobSeekerFormSchema>) {
     setUploading(true);
-
-    const [photoUrl, resumeUrl] = await Promise.all([
-      uploadFile(),
-      uploadResume(),
-    ]);
-
-    if (photoUrl) {
-      form.setValue("photo", photoUrl);
-    }
-
-    if (resumeUrl) {
-      form.setValue("resume", resumeUrl);
-     
-    }
-
+  
+    const [photoUrl, resumeUrl] = await Promise.all([uploadFile(), uploadResume()]);
+  
     if (!photoUrl || !resumeUrl) {
-      alert("Please upload both the Photo and Resume before submitting.");
+      Popup({variant: "destructive", title: "Error", description: "Trouble uploading resume or photo"});
       setUploading(false);
       return;
     }
-
-    console.log(values);
-
-    const response = await createJobSeeker(values);
-    console.log(response);
-    if (response.status == 200) {
+  
+    form.setValue("photo", photoUrl);
+    form.setValue("resume", resumeUrl);
+  
+    const response = await createJobSeeker({
+      ...values,
+      photo: photoUrl,
+      resume: resumeUrl,
+    });
+  
+    setUploading(false);
+    if (response.status === 200) {
       router.push("/dashboard");
-      setUploading(false);
     }
   }
+  
 
   return (
     <div>
@@ -147,7 +156,7 @@ export default function JobSeekerForm() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit(form.getValues()); // ✅ Manually trigger onSubmit after file upload
+            onSubmit(form.getValues());
           }}
           className="space-y-6 flex-col items-center justify-center"
         >
@@ -185,12 +194,31 @@ export default function JobSeekerForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Skills</FormLabel>
+                <div className="flex flex-wrap gap-2">
+                  {skillOptions.map((skill) => (
+                    <Badge
+                      key={skill}
+                      onClick={() => handleSkillClick(skill)}
+                      className="cursor-pointer hover:bg-primary/80"
+                    >
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {field.value.map((skill: string) => (
+                    <Badge
+                      key={skill}
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() => removeSkill(skill)}
+                    >
+                      {skill} &times;
+                    </Badge>
+                  ))}
+                </div>
                 <FormControl>
-                  <Textarea
-                    placeholder="Describe your skills"
-                    className="resize-none"
-                    {...field}
-                  />
+                 
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -233,7 +261,9 @@ export default function JobSeekerForm() {
             )}
           />
 
-        <Button type="submit" disabled={uploading}>{uploading ? <Loader2 className="w-4 h-4 animate-spin"/> : "Submit"}</Button>
+          <Button type="submit" disabled={uploading}>
+            {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Submit"}
+          </Button>
         </form>
       </Form>
     </div>

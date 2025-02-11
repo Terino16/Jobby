@@ -6,6 +6,8 @@ import { auth } from "@/lib/auth";
 export const createJobSeeker = async (data: JobSeekerForm) => {
     const session = await auth();
 
+    console.log(data);
+
     if (!session?.user?.id) {
         return { message: "Unauthorized Access Detected" };
     }
@@ -35,8 +37,8 @@ export const createJobSeeker = async (data: JobSeekerForm) => {
             status: 200
         };
 
-    } catch (error) {
-        console.error("Error creating Profile:", error);
+    } catch (error: any) {
+        console.log(error.stack)
         return { message: "An error occurred while creating the Profile.",
             status: 500
          };

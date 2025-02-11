@@ -29,7 +29,7 @@ export function GithubIcon()
   </svg>)
 }
 
-export default function LoginForm({
+export default function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -59,7 +59,7 @@ export default function LoginForm({
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome Back</h1>
                 <p className="text-balance text-muted-foreground">
-                  Login to Jobby
+                  Signup to Jobby
                 </p>
               </div>
 
@@ -78,18 +78,18 @@ export default function LoginForm({
               </div>
              
               <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <Link href="/auth/signup" className="underline underline-offset-4">
-                  Sign up
+               Already have an account?{" "}
+                <Link href="/auth/login" className="underline underline-offset-4">
+                  Login
                 </Link>
               </div>
             </div>
           
           <div className="relative hidden bg-muted md:block">
             <Image
-              src="/auth.jpg"
+              src="/signup.jpg"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolut e inset-0 h-full w-full object-contain"
               width={500}
               height={500}
             />

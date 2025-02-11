@@ -46,15 +46,7 @@ async function DashboardContent() {
     createdAt: new Date(app.createdAt), // This conversion was causing the type error
   }));
 
-  return (
-    <HomePage 
-      company={company} 
-      jobs={jobs} 
-      applicants={applicants} 
-      unreviewedApplicants={unreviewedApplicants} 
-      recentlyAppliedCandidates={recentlyAppliedCandidates}
-    />
-  );
+
 }
 
 export default function Page() {

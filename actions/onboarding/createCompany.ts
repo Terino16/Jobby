@@ -2,8 +2,7 @@
 import { CompanyForm } from "@/constants/schemas/CompanyForm";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { stat } from "fs";
+
 
 export const createCompany = async (data: CompanyForm) => {
     const session = await auth();
@@ -14,6 +13,7 @@ export const createCompany = async (data: CompanyForm) => {
 
     try {
         // Create the company
+        console.log("Creating company with data:", data);
         const company = await prisma.company.create({
             data: {
                 userId: session.user.id,
@@ -36,6 +36,7 @@ export const createCompany = async (data: CompanyForm) => {
              },
         });
 
+        console.log("User onboarding status updated.");
        
 
         return {
@@ -45,7 +46,7 @@ export const createCompany = async (data: CompanyForm) => {
         };
 
     } catch (error) {
-        console.error("Error creating company:", error);
+        console.log("Error creating company:", error);
         return { message: "An error occurred while creating the company.",
             status: 500
          };
