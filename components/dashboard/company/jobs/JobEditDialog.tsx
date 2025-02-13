@@ -34,7 +34,7 @@ import { Input } from "@/components/ui/input"
 import { GeneralSubmitButton } from "@/components/general/SubmitButtons";
 import { updateJob } from "@/actions/dashboard/company/Myjobs/updateJob";
 import { Status as PrismaStatus } from "@prisma/client";
-
+import { useToast } from "@/hooks/use-toast";
 const jobSchema = z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().min(10, "Description must be at least 10 characters"),
@@ -59,6 +59,7 @@ interface Props {
 
 
 export default function JobEditDialog({ data }: Props) {
+    const {toast}=useToast();
     const form = useForm<z.infer<typeof jobSchema>>({
         resolver: zodResolver(jobSchema),
         defaultValues: {
@@ -73,6 +74,20 @@ export default function JobEditDialog({ data }: Props) {
     async function onSubmit(values: z.infer<typeof jobSchema>) {
         console.log(values)
         const updatedJob = await updateJob(data.id, values);
+        if(updatedJob.status==200)
+        {
+            toast({
+                title: "Job updated successfully",
+                description: "Your job has been updated successfully",
+            })
+        }
+        else
+        {
+            toast({
+                title: "Job updated failed",
+                description: "Your job has been updated failed",
+            })
+        }
     }
 
     return (

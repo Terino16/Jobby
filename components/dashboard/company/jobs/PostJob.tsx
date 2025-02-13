@@ -5,9 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea"
+import { useToast } from "@/hooks/use-toast"
 
 
-import { useRouter } from 'next/navigation'
 
 import {
   Form,
@@ -26,6 +26,7 @@ import { GeneralSubmitButton } from "@/components/general/SubmitButtons";
 
 
 export default function CompanyForm() {
+  const {toast}=useToast();
 
   const form = useForm<z.infer<typeof PostJobSchema>>({
     resolver: zodResolver(PostJobSchema),
@@ -37,16 +38,29 @@ export default function CompanyForm() {
     },
   });
 
-  const router = useRouter()
 
    async function onSubmit(values: z.infer<typeof PostJobSchema>) {
-    console.log(values);
-    //const response=await createJob({...values,companyId:companyId});
    
-    // if(response.status==200)
-    // {
-    //   router.push('/dashboard')
-    // }
+    const response=await createJob(values);
+    console.log(response);
+   
+    if(response.status==200)
+    {
+    toast({
+      title: "Job created successfully",
+      description: "Your job has been created successfully",
+    })
+    form.reset();
+    }
+
+    else
+    {
+      toast({
+        title: "Error",
+        description:response.message,
+        variant: "destructive",
+      } )
+    }
 
   }
 
@@ -81,7 +95,7 @@ export default function CompanyForm() {
                 <FormItem className="w-full">
                   <FormLabel>Job Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="company@gmail.com" {...field} />
+                    <Input placeholder="Remote , Onsite , Hybrid" {...field} />
                   </FormControl>
 
                   <FormMessage />

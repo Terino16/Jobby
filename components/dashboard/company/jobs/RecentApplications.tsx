@@ -11,7 +11,23 @@ import { format } from "date-fns";
 import { Application } from "@/constants/types/Applications";
 
 interface RecentApplicationsProps {
-  recentlyAppliedCandidates: Application[];
+   recentlyAppliedCandidates: {
+    name: string;
+    id: string;
+    email: string;
+    image: string;
+    jobId: string;
+    skills: string[];
+    achievements: string;
+    resume: string;
+    jobseekerId: string;
+    status: boolean;
+    pending: boolean;
+    createdAt: Date;
+    job: {
+      title: string;
+    }
+   }[];
 }
 
 export function RecentApplications({ recentlyAppliedCandidates }: RecentApplicationsProps) {
@@ -29,10 +45,10 @@ export function RecentApplications({ recentlyAppliedCandidates }: RecentApplicat
               className="flex items-center space-x-4 rounded-lg border p-4"
             >
               <Avatar>
-                <AvatarFallback>{application.user.name?.charAt(0) || ''}</AvatarFallback>
+                <AvatarFallback>{application.name?.charAt(0) || ''}</AvatarFallback>
               </Avatar>
               <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium">{application.user.name}</p>
+                <p className="text-sm font-medium">{application.name}</p>
                 <p className="text-sm text-muted-foreground">
                   {application.job.title}
                 </p>

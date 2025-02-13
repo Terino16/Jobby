@@ -99,7 +99,7 @@ export default function CompanyForm() {
   };
 
   return (
-    <div>
+    <div className="mb-8">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

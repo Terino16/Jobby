@@ -18,7 +18,7 @@ export default async function PendingReviews() {
         value={unreviewedApplicants}
         icon={<Clock className="h-4 w-4 text-black" />}
         className="bg-purple-500"
-        divClassName="shadow-[0px_0px_3px_rgba(255,_0,_252,0.8)]"
+        description="Total pending reviews"
       />
             </Suspense>
         </div>

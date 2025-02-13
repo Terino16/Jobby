@@ -9,31 +9,16 @@ export const getRecentlyAppliedCandidates = async (companyId: string) => {
       }
     },
     include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
-          image: true,
-          employee: {
-            select: {
-              photo: true,
-              resume: true,
-              achievements: true,
-              skills: true
-            }
-          }
-        }
-      },
-      job: {
-        select: {
-          title: true
-        }
+     job: {
+      select: {
+        title: true
       }
+     }
     },
     orderBy: {
       createdAt: 'desc'
     },
-    take: 10 // Limit to recent 10 applications
+    take: 3 // Limit to recent 10 applications
   });
 
   return recentApplicants;

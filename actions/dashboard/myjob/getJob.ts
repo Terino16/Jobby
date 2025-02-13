@@ -5,21 +5,6 @@ export const getJob = async (jobid: string) => {
         where: {
             id: jobid,
         },
-        include: {
-            applicants: {
-                include: {
-                    user: {
-                        select: {
-                            id: true,
-                            name: true,
-                            email: true,
-                            image: true,
-                            employee:true
-                        }
-                    }
-                }
-            }
-        },
     });
     return job;
 }

@@ -15,7 +15,7 @@ const Page = async () => {
   if (user.role) {
     return redirect(`/dashboard/jobseeker`); // Ensure redirect is returned
   } else {
-    return redirect(`/dashboard/company`); // Ensure redirect is returned
+    return redirect(`/dashboard/company/home`); // Ensure redirect is returned
   }
 
   return <div>page</div>;

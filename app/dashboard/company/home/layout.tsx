@@ -2,11 +2,12 @@ import { ModeToggle } from "@/components/general/theme-toggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 
-export default function DashboardLayout({ children, activeJobs, pendingReviews, recentlyAppliedCandidates, totalApplications }: { children: React.ReactNode,
+export default function DashboardLayout({ children, activeJobs, pendingReviews, totalJobs, totalApplications, recentlyApplied }: { children: React.ReactNode,
   activeJobs: React.ReactNode,
   pendingReviews: React.ReactNode,
-  recentlyAppliedCandidates: React.ReactNode,
+  totalJobs: React.ReactNode,
   totalApplications: React.ReactNode,
+  recentlyApplied: React.ReactNode,
  }) {
     return (
   <>
@@ -16,16 +17,17 @@ export default function DashboardLayout({ children, activeJobs, pendingReviews, 
           <ModeToggle />
         </div>
       </header>
-      < main className=" flex-1 p-8">
+      < main className="flex-1 p-8">
         
       <h1 className="lg:text-5xl md:text-4xl text-3xl font-thin tracking-tighter font-sans mb-8">Dashboard Overview</h1>
       
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+      <div className="grid gap-4 md:grid-cols-2  xl:grid-cols-4 mb-8">
+       {totalJobs}
        {activeJobs}
-       {pendingReviews}
-       {recentlyAppliedCandidates}
        {totalApplications}
+       {pendingReviews}
       </div>
+      {recentlyApplied}
       </main>
       </>
     )

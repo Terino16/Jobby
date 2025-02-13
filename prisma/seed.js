@@ -59,7 +59,7 @@ async function main() {
             photo: 'https://picsum.photos/200',
             resume: faker.internet.url(),
             achievements: faker.lorem.paragraphs(2),
-            skills: faker.lorem.words(5),
+            skills: [faker.lorem.word(), faker.lorem.word(), faker.lorem.word(), faker.lorem.word(), faker.lorem.word()],
           },
         },
       },
@@ -77,7 +77,8 @@ async function main() {
       await prisma.applicant.create({
         data: {
           jobId: job.id,
-          userId: applicant.id,
+          jobseekerId: applicant.employee.id,
+          pending: true,
           image: 'https://picsum.photos/200',
           name: applicant.name,
           email: applicant.email,

@@ -11,5 +11,10 @@ export const updateJob = async (jobId: string, values: any) => {
     data: values,
   });
   revalidatePath("/dashboard/company/myjobs");
-  return updatedJob;
+  return (
+    {
+      status: 200,
+      message: "Job updated successfully",
+    }
+  );
 };

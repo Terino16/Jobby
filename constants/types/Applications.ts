@@ -6,7 +6,7 @@ interface User {
       photo: string;
       resume: string;
       achievements: string;
-      skills: string;
+      skills: string[];
     } | null;  // Also making employee optional since it might be null
 }
   

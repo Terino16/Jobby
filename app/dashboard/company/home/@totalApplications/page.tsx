@@ -18,8 +18,8 @@ export default async function TotalApplications() {
                 title="Total Applications"
                 value={applications}
                 icon={<Users className="h-4 w-4 text-black" />}
-                className="bg-blue-500"
-                divClassName="shadow-[0px_0px_3px_rgba(0,_178,_255,_0.8)]"
+                className="bg-yellow-500"
+                description="Total applications received"
             />
               </Suspense>
         </div>

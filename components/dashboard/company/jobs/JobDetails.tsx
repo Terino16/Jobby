@@ -1,23 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import ApplicantProfile from "./ApplicantProfile";
 
 interface Applicant {
     id: string;
-    user: {
-        name: string;
-        email: string;
-        image: string;
-        employee: {
-            skills: string;
-            achievements: string;
-            resume: string;
-        }
-    }
+    name: string;
+    email: string;
+    image: string;
+    skills: string[];
+    achievements: string;
+    resume: string;
+    
 }
 
 
@@ -27,15 +26,27 @@ export default function JobDetails({ job, applicants }: { job: any, applicants: 
     const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
     return (
         <>
-        <Card className="mb-6 shadow-md rounded-2xl">
+        <Card className="mb-6 border-none">
             <CardHeader>
-                <CardTitle>{job.title}</CardTitle>
+                <CardTitle className="text-3xl font-bold tracking-tight">{job.title}</CardTitle>
             </CardHeader>
-            <CardContent>
-                <p><strong>Location:</strong> {job.location}</p>
-                <p><strong>Salary:</strong> {job.salary}</p>
-                <p><strong>Status:</strong> {job.status}</p>
-                <p><strong>Description:</strong> {job.description}</p>
+            <CardContent className="flex flex-col gap-4">
+                <div className="flex items-center  gap-4">
+                    <Badge className="bg-blue-500 text-white">Location</Badge>
+                    <p>{job.location}</p>
+                </div>
+                <div className="flex items-center gap-4">
+                    <Badge className="bg-blue-500 text-white">Salary</Badge>
+                    <p>{job.salary}</p>
+                </div>
+                <div className="flex items-center gap-4">
+                    <Badge className="bg-blue-500 text-white">Status</Badge>
+                    <p>{job.status}</p>
+                </div>
+                <div className="flex items-start gap-4">
+                    <Badge className="bg-blue-500 text-white">Description</Badge>
+                    <p>{job.description}</p>
+                </div>
             </CardContent>
         </Card>
 
@@ -48,14 +59,14 @@ export default function JobDetails({ job, applicants }: { job: any, applicants: 
                     <Card key={applicant.id} className="shadow-md rounded-2xl p-4 flex justify-between items-center">
                         <div className="flex items-center gap-4">
                            <Avatar>
-                            <AvatarImage src={applicant.user.image} />
+                            <AvatarImage src={applicant.image} />
                             <AvatarFallback>
-                                {applicant.user.name.charAt(0)}
+                                {applicant.name.charAt(0)}
                             </AvatarFallback>
                            </Avatar>
                             <div>
-                                <p className="font-bold">{applicant.user.name}</p>
-                                <p className="text-sm">{applicant.user.email}</p>
+                                <p className="font-bold">{applicant.name}</p>
+                                <p className="text-sm">{applicant.email}</p>
                             </div>
                         </div>
                         <Dialog>
@@ -63,17 +74,7 @@ export default function JobDetails({ job, applicants }: { job: any, applicants: 
                                 <Button variant="outline" onClick={() => setSelectedApplicant(applicant)}>View Details</Button>
                             </DialogTrigger>
                             {selectedApplicant && (
-                                <DialogContent className="rounded-2xl">
-                                    <DialogHeader>
-                                        <DialogTitle>{selectedApplicant.user.name}'s Profile</DialogTitle>
-                                    </DialogHeader>
-                                    <div className="mt-4 space-y-2">
-                                        <p><strong>Email:</strong> {selectedApplicant.user.email}</p>
-                                        <p><strong>Skills:</strong> {selectedApplicant.user.employee?.skills}</p>
-                                        <p><strong>Achievements:</strong> {selectedApplicant.user.employee?.achievements}</p>
-                                        <p><strong>Resume:</strong> <a href={selectedApplicant.user.employee?.resume} className="text-blue-600 underline" target="_blank">View Resume</a></p>
-                                    </div>
-                                </DialogContent>
+                              <ApplicantProfile applicant={selectedApplicant} />
                             )}
                         </Dialog>
                     </Card>
@@ -84,3 +85,5 @@ export default function JobDetails({ job, applicants }: { job: any, applicants: 
         </>
     );
 }
+
+

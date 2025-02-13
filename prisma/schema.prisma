@@ -56,7 +56,7 @@ model User {
   sessions      Session[]
   company       Company?  
   employee      JobSeeker?
-  applicant     Applicant[]
+
   @@map("users")
 }
 
@@ -68,6 +68,7 @@ model JobSeeker {
   achievements  String
   skills        String []
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  applicant     Applicant[]
 
   @@map("jobseeker")
 }
@@ -118,12 +119,13 @@ model Applicant {
   image         String
   name          String
   email         String
-  skills        String
+  skills        String []
   achievements  String
   resume        String
-  userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobseekerId   String
+  jobseeker     JobSeeker @relation(fields: [jobseekerId], references: [id], onDelete: Cascade)
   status        Boolean   @default(false) //false->pending, true->accepted
+  pending       Boolean   @default(true) //false->pending, true->accepted
   createdAt     DateTime  @default(now()) // Track application time
 
   @@map("applicants")
